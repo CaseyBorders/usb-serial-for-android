@@ -60,6 +60,14 @@ public interface UsbSerialPort extends Closeable {
     /** Values for get[Supported]ControlLines() */
     enum ControlLine { RTS, CTS,  DTR, DSR,  CD, RI }
 
+    /** Values for setFlowControl() */
+    enum FlowControlMode {
+        FLOW_NONE,
+        FLOW_RTS_CTS,
+        FLOW_DTR_DSR,
+        FLOW_XON_XOFF
+    }
+
     /**
      * Returns the driver used by this port.
      */
@@ -146,6 +154,11 @@ public interface UsbSerialPort extends Closeable {
      * @throws UnsupportedOperationException if values are not supported by a specific device
      */
     void setParameters(int baudRate, int dataBits, int stopBits, @Parity int parity) throws IOException;
+
+    default void setFlowControl(FlowControlMode mode) throws IOException {
+        setFlowControl(mode, (byte)0x11, (byte)0x13);
+    }
+    void setFlowControl(FlowControlMode mode, byte xon, byte xoff) throws IOException;
 
     /**
      * Gets the CD (Carrier Detect) bit from the underlying UART.

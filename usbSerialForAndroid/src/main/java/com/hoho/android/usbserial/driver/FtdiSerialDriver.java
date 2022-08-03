@@ -65,11 +65,17 @@ public class FtdiSerialDriver implements UsbSerialDriver {
 
         private static final int RESET_REQUEST = 0;
         private static final int MODEM_CONTROL_REQUEST = 1;
+        private static final int SET_FLOW_CONTROL_REQUEST = 2;
         private static final int SET_BAUD_RATE_REQUEST = 3;
         private static final int SET_DATA_REQUEST = 4;
         private static final int GET_MODEM_STATUS_REQUEST = 5;
         private static final int SET_LATENCY_TIMER_REQUEST = 9;
         private static final int GET_LATENCY_TIMER_REQUEST = 10;
+
+        private static final int FLOW_NONE = 0x0000;
+        private static final int FLOW_RTS_CTS = 0x0100;
+        private static final int FLOW_DTR_DSR = 0x0200;
+        private static final int FLOW_XON_XOFF = 0x0400;
 
         private static final int MODEM_CONTROL_DTR_ENABLE = 0x0101;
         private static final int MODEM_CONTROL_DTR_DISABLE = 0x0100;
@@ -295,6 +301,30 @@ public class FtdiSerialDriver implements UsbSerialDriver {
                 throw new IOException("Get modem status failed: result=" + result);
             }
             return data[0];
+        }
+
+        @Override
+        public void setFlowControl(FlowControlMode mode, byte xon, byte xoff) throws IOException {
+            byte[] data = null;
+            int dataLength = 0;
+            int controlSetting = FLOW_NONE;
+
+            switch (mode) {
+                case FLOW_NONE: controlSetting = FLOW_NONE; break;
+                case FLOW_DTR_DSR: controlSetting = FLOW_DTR_DSR; break;
+                case FLOW_RTS_CTS: controlSetting = FLOW_RTS_CTS; break;
+                case FLOW_XON_XOFF: {
+                    controlSetting = FLOW_XON_XOFF;
+                    data = new byte[]{ xon, xoff };
+                    dataLength = 2;
+                } break;
+            }
+            
+            int result = mConnection.controlTransfer(REQTYPE_HOST_TO_DEVICE, SET_FLOW_CONTROL_REQUEST,
+                controlSetting, mPortNumber+1, data, dataLength, USB_WRITE_TIMEOUT_MILLIS);
+            if (result < 0) {
+                throw new IOException("Set flow control failed: result=" + result);
+            }
         }
 
         @Override

@@ -5,13 +5,15 @@
 
 # usb-serial-for-android
 
-This is a driver library for communication with Arduinos and other USB serial hardware on
-Android, using the
+This is a driver library for communication with Arduinos and other USB serial
+hardware on Android, using the
 [Android USB Host Mode (OTG)](http://developer.android.com/guide/topics/connectivity/usb/host.html)
 available since Android 3.1 and working reliably since Android 4.2.
 
-No root access, ADK, or special kernel drivers are required; all drivers are implemented in
-Java.  You get a raw serial port with `read()`, `write()`, and [other functions](https://github.com/mik3y/usb-serial-for-android/wiki/FAQ#Feature_Matrix) for use with your own protocols.
+No root access, ADK, or special kernel drivers are required; all drivers are
+implemented in Java. You get a raw serial port with `read()`, `write()`, and
+[other functions](https://github.com/mik3y/usb-serial-for-android/wiki/FAQ#Feature_Matrix)
+for use with your own protocols.
 
 ## Quick Start
 
@@ -35,7 +37,8 @@ dependencies {
 
 **2.** If the app should be notified when a device is attached, add 
 [device_filter.xml](https://github.com/mik3y/usb-serial-for-android/blob/master/usbSerialExamples/src/main/res/xml/device_filter.xml) 
-to your project's `res/xml/` directory and configure in your `AndroidManifest.xml`.
+to your project's `res/xml/` directory and configure in your
+`AndroidManifest.xml`.
 
 ```xml
 <activity
@@ -150,7 +153,8 @@ and devices implementing the CDC/ACM protocol like
 
 ## Help & Discussion
 
-For common problems, see the [FAQ](https://github.com/mik3y/usb-serial-for-android/wiki/FAQ) wiki page.
+For common problems, see the
+[FAQ](https://github.com/mik3y/usb-serial-for-android/wiki/FAQ) wiki page.
 
 Are you using the library? Add your project to 
 [ProjectsUsingUsbSerialForAndroid](https://github.com/mik3y/usb-serial-for-android/wiki/Projects-Using-usb-serial-for-android).

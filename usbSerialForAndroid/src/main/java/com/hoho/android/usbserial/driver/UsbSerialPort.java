@@ -155,9 +155,29 @@ public interface UsbSerialPort extends Closeable {
      */
     void setParameters(int baudRate, int dataBits, int stopBits, @Parity int parity) throws IOException;
 
+    /**
+     * Sets the flow control mode of this port.
+     *
+     * @param mode selected mode.
+     * @throws IOException on error setting the flow control mode
+     * @throws UnsupportedOperationException if flow control not supported by a specific device
+     *
+     * @implNote When using this overload to set XON/XOFF mode the XON and XOFF characters are set
+     *           to 0x11 and 0x13 respectively.
+     */
     default void setFlowControl(FlowControlMode mode) throws IOException {
         setFlowControl(mode, (byte)0x11, (byte)0x13);
     }
+
+    /**
+     * Sets the flow control mode of this port.
+     *
+     * @param mode The selected mode.
+     * @param xon character to indicate XON if the XON/XOFF mode is selected
+     * @param xoff character to indicate XOFF if the XON/XOFF mode is selected
+     * @throws IOException on error setting the flow control mode
+     * @throws UnsupportedOperationException if flow control not supported by a specific device
+     */
     void setFlowControl(FlowControlMode mode, byte xon, byte xoff) throws IOException;
 
     /**
